@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "internal://glassbox/s0/far_nzy/v1",
+  "title": "FAR_NZY S₀ decision record",
+  "description": "One human-verified (or OPTIMAL-labeled) decision from Farkle Frenzy. A corpus is an array of these. C(σ) = fraction of rows where an evolved policy reproduces `decision`.",
+  "type": "object",
+  "required": ["id", "game", "decisionType", "seed", "state", "options", "decision", "labelSource"],
+  "properties": {
+    "id": { "type": "string", "description": "e.g. s0-farnzy-000123" },
+    "game": { "const": "FAR_NZY" },
+    "decisionType": {
+      "enum": ["CONTINUE_OR_BANK", "CHAIN_SELECT", "USE_MULTIPLIER_ORB", "USE_DOUBLER", "RALLY_VOTE"],
+      "description": "Which decision this row captures (verified against monteCarlo.ts / farkleScorer.ts)."
+    },
+    "seed": { "type": "integer", "description": "csprng seed; the row is fully reproducible from it." },
+    "turnIndex": { "type": "integer" },
+    "state": {
+      "type": "object",
+      "description": "State features that drive the decision. Fields present depend on decisionType.",
+      "properties": {
+        "mode": { "enum": ["SOLO_FREE","SOLO_CASINO","VS_FREE","VS_CASINO","RALLY_FREE","RALLY_CASINO","HEIST_FREE","HEIST_CASINO"] },
+        "unbanked": { "type": "number", "description": "accumulated unbanked points this turn (drives playerContinue)" },
+        "multiplierStep": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "energy": { "type": "number" },
+        "blockerDensity": { "enum": ["LOW","MEDIUM","HIGH"] },
+        "facesAvailable": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 6 }, "description": "for CHAIN_SELECT" },
+        "role": { "enum": ["RAINMAKER","HEADHUNTER","ARCHIVIST","CONDUCTOR"], "description": "for RALLY_VOTE" }
+      }
+    },
+    "options": {
+      "type": "array",
+      "description": "Legal choices at this decision point. For CHAIN_SELECT, each option carries the scoreFarkle result.",
+      "items": {
+        "oneOf": [
+          { "type": "string", "description": "e.g. CONTINUE | BANK | USE | SKIP | PASS" },
+          {
+            "type": "object",
+            "properties": {
+              "chain": { "type": "array", "items": { "type": "integer" } },
+              "score": { "type": "integer" },
+              "combo": { "type": "string" },
+              "isFarkle": { "type": "boolean" }
+            }
+          }
+        ]
+      }
+    },
+    "decision": {
+      "description": "The correct/observed choice: a string, or the index into options for CHAIN_SELECT.",
+      "type": ["string", "integer"]
+    },
+    "labelSource": {
+      "enum": ["OPTIMAL", "AVERAGE", "WEAK", "HUMAN_REPLAY"],
+      "description": "OPTIMAL/AVERAGE/WEAK come from the monteCarlo PlayerModel; HUMAN_REPLAY from event-sourced logs."
+    },
+    "verifiedBy": { "type": "string", "description": "e.g. monteCarlo:OPTIMAL@<engine-sha>, or a human name for replay-sourced rows" },
+    "scorerContext": { "type": "object", "description": "optional: EV of continue vs bank, argmax margin, etc." }
+  },
+  "examples": [
+    {
+      "id": "s0-farnzy-000001",
+      "game": "FAR_NZY",
+      "decisionType": "CONTINUE_OR_BANK",
+      "seed": 123456,
+      "turnIndex": 4,
+      "state": { "mode": "SOLO_CASINO", "unbanked": 850, "multiplierStep": 2, "energy": 60, "blockerDensity": "MEDIUM" },
+      "options": ["CONTINUE", "BANK"],
+      "decision": "CONTINUE",
+      "labelSource": "OPTIMAL",
+      "verifiedBy": "monteCarlo:OPTIMAL"
+    },
+    {
+      "id": "s0-farnzy-000002",
+      "game": "FAR_NZY",
+      "decisionType": "CHAIN_SELECT",
+      "seed": 123456,
+      "turnIndex": 5,
+      "state": { "mode": "SOLO_CASINO", "facesAvailable": [1,1,5,3,2,4], "multiplierStep": 2 },
+      "options": [
+        { "chain": [1,1], "score": 200, "combo": "Two Ones", "isFarkle": false },
+        { "chain": [5], "score": 50, "combo": "Single Five", "isFarkle": false },
+        { "chain": [1,1,5], "score": 250, "combo": "Ones+Five", "isFarkle": false }
+      ],
+      "decision": 2,
+      "labelSource": "OPTIMAL",
+      "verifiedBy": "monteCarlo:OPTIMAL"
+    }
+  ]
+}
