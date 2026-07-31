@@ -65,4 +65,33 @@ See `s0/s0.schema.json`. Each row is one decision: `{seed, turnIndex, decisionTy
 3. I then write the **generator** + emit a first real `S₀` (a few thousand labeled decisions across modes/densities/seeds) into this branch, replacing the placeholder.
 4. **Re-target the kit DSL** to FAR_NZY decisions so the evolutionary engine can express and evolve real strategies.
 
-*This document is a review artifact; it modifies no Sacred Core file.*
+---
+
+## 9. RECONCILIATION with the authoritative handoff (GLASSBOX_DNA_IMPLEMENTATION.md, DNA-FINAL 2026-07-27)
+
+The owner's master handoff supersedes prior assumptions. Corrections and the resolved labeling answer:
+
+### 9.1 The labeling question is answered — and it is NOT "optimal vs average"
+The design's fitness function (handoff §8 D5) is:
+`fitness = spatial_entropy·0.10 + human_drl_alignment·0.10 + win_rate·0.15 + engagement·0.25 + fun_score·0.25 + exploit_free·0.15`.
+Engagement + fun = **50%**; win-rate is only **15%**; and a DRL win-rate **>95% → exploit → quarantine** (§12). The HD-HTRP reward is `R = 0.40·spatial_entropy + 0.35·telemetry_alignment + 0.25·survey_satisfaction`, with **KL-to-human-comfort 0.1–0.3** as the target (§11, §12).
+
+**Therefore "correct" = a fun, human-aligned, non-exploitable decision — a tuned band *near* human play (KL 0.1–0.3), not the EV-optimal move and not the average move.** OPTIMAL/AVERAGE/WEAK from `monteCarlo` are used to *bound the space and detect exploits* (the >95% ceiling), not as ground truth.
+
+### 9.2 What this makes S₀
+- **Primary anchor = human telemetry**, not a solver. The real answer key is human decisions captured by the W10 pipeline (`turnLatencyMs`, `selectionFrictionCount`, `spatialGazeDwellTimeMs`) plus survey satisfaction. `labelSource: HUMAN_TELEMETRY`.
+- **monteCarlo models** provide state coverage + the exploit ceiling, not the "right move."
+- **Grading (`C(σ)`) is re-defined:** not "match optimal," but **fitness ≥ threshold AND KL-to-human within 0.1–0.3 AND exploit_free**. The schema now carries `fitness` and `humanTelemetry` fields.
+
+### 9.3 Repo-truth corrections
+- **`magentadice-cyancode` = the CODEBASE repo** (where the game is built, W0→D5.5, by *extending* existing systems); **`Glassbox_Labs` = the GOVERNANCE repo** (aegis/decisions — where this `game-autobuild-kit` and these S₀ docs live). The game build does **not** happen here.
+- Submodules pinned: `core → FAR_NZY@45c1d91`, `dream → adabt-core@b0be2a5`, `devos → libriopal-devos@6bf037b (private)`.
+- **"Extend, never re-implement" (handoff §1.4, M5–M12 firewall)** is the prime rule. The kit in this repo is a **governance/method + determinism-proof harness**, not the game — its Rack-O DSL is a demonstrator; the real strategy layer is the **organism/DNA system** (Command A+ → DNA JSON, D3/D4) evaluated by D5 fitness.
+- Verify-before-W0 flags carried: (1) `dream` = AGROS vs adabt-core/AMIS naming conflict; (2) OWC "theory vs ACTIVE"; (3) `governance-check.ts` is to-build, not existing.
+
+### 9.4 Where the kit genuinely serves the product
+Determinism is mandated and gate-tested by the handoff (C6 CSPRNG, no `Math.random()` in seed paths, `same seed = same board everywhere`, Q×1000 fixed-point — §7.4, §14). The kit's **62 runnable determinism/verification invariants are directly the discipline W1 and the R1 acceptance criteria require** — that is the honest, non-duplicative contribution of this repo to the product.
+
+---
+
+*This document is a review artifact; it modifies no Sacred Core file. Reconciled with GLASSBOX_DNA_IMPLEMENTATION.md (DNA-FINAL).*

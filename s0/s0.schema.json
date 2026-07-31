@@ -50,11 +50,34 @@
       "type": ["string", "integer"]
     },
     "labelSource": {
-      "enum": ["OPTIMAL", "AVERAGE", "WEAK", "HUMAN_REPLAY"],
-      "description": "OPTIMAL/AVERAGE/WEAK come from the monteCarlo PlayerModel; HUMAN_REPLAY from event-sourced logs."
+      "enum": ["HUMAN_TELEMETRY", "HUMAN_REPLAY", "OPTIMAL", "AVERAGE", "WEAK"],
+      "description": "PRIMARY anchor is HUMAN_TELEMETRY/HUMAN_REPLAY (per GLASSBOX_DNA_IMPLEMENTATION §8 D5 / §12: 'correct' = fun + human-aligned, KL 0.1-0.3, win>95% is an exploit). OPTIMAL/AVERAGE/WEAK (monteCarlo PlayerModel) bound the space + detect exploits, they are NOT ground truth."
     },
-    "verifiedBy": { "type": "string", "description": "e.g. monteCarlo:OPTIMAL@<engine-sha>, or a human name for replay-sourced rows" },
-    "scorerContext": { "type": "object", "description": "optional: EV of continue vs bank, argmax margin, etc." }
+    "verifiedBy": { "type": "string", "description": "e.g. telemetry:session-<id>, human name for replay rows, or monteCarlo:OPTIMAL@<engine-sha> for bounding rows" },
+    "fitness": {
+      "type": "object",
+      "description": "D5 fitness breakdown (handoff §8): weights spatial_entropy 0.10, human_drl_alignment 0.10, win_rate 0.15, engagement 0.25, fun_score 0.25, exploit_free 0.15. C(σ) grades on fitness + KL-to-human, not win-rate.",
+      "properties": {
+        "spatial_entropy": { "type": "number" },
+        "human_drl_alignment": { "type": "number" },
+        "win_rate": { "type": "number" },
+        "engagement": { "type": "number" },
+        "fun_score": { "type": "number" },
+        "exploit_free": { "type": "number" },
+        "kl_to_human": { "type": "number", "description": "target band 0.1–0.3; outside it fails" }
+      }
+    },
+    "humanTelemetry": {
+      "type": "object",
+      "description": "W10 human telemetry signals (handoff §8 W10) that anchor HUMAN_TELEMETRY rows.",
+      "properties": {
+        "turnLatencyMs": { "type": "number" },
+        "selectionFrictionCount": { "type": "number" },
+        "spatialGazeDwellTimeMs": { "type": "number" },
+        "surveySatisfaction": { "type": "number" }
+      }
+    },
+    "scorerContext": { "type": "object", "description": "optional: EV of continue vs bank, argmax margin, exploit-ceiling flag, etc." }
   },
   "examples": [
     {
