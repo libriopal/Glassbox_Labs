@@ -9,7 +9,13 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:feature-flag-gate": "tsx verify-feature-flag-gate.ts",
+    "verify:pool-closes": "tsx verify-pool-closes.ts",
+    "verify:idempotent-settlement": "tsx verify-idempotent-settlement.ts",
+    "verify:row-lock-serializes": "tsx verify-row-lock-serializes.ts",
+    "verify:ledger-append-only": "tsx verify-ledger-append-only.ts",
+    "verify": "npm run verify:feature-flag-gate && npm run verify:pool-closes && npm run verify:idempotent-settlement && npm run verify:row-lock-serializes && npm run verify:ledger-append-only"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -17,6 +23,7 @@
     "typescript": "^5.6.0"
   },
   "dependencies": {
-    "@glassbox/genome-engine": "workspace:*"
+    "@glassbox/genome-engine": "workspace:*",
+    "@glassbox/store": "workspace:*"
   }
 }

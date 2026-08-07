@@ -103,6 +103,9 @@ importers:
       '@glassbox/genome-engine':
         specifier: workspace:*
         version: link:../engine
+      '@glassbox/store':
+        specifier: workspace:*
+        version: link:../../core/store
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
