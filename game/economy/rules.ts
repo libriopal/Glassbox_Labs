@@ -5,8 +5,19 @@ import type { Account, AccountMessage, PurchaseCatalogItem, SessionUXConfig, Sta
 
 // --- §6.1 / §6.2 — one code path, two triggers ------------------------------
 
-/** Under-21 accounts never see the economy. Self-exclusion reuses the same invisible-layer mechanism. */
-export function economyVisible(account: Account): boolean {
+/**
+ * Under-21 accounts never see the economy. Self-exclusion reuses the same invisible-layer mechanism.
+ *
+ * `branch` (handoff_p2/07_TRACK1_BRANCH_EXPANSION.md, D3) is an ADDITIVE extension point for Track 1's
+ * B-E branch expansion — optional, so every existing caller (single-arg `economyVisible(account)`) is
+ * unaffected. Self-exclusion/age-verification remain UNCONDITIONAL regardless of branch (blueprint §2,
+ * non-negotiable): a self-excluded account must stay excluded from the economy on every branch, no
+ * exceptions carved out for new branches. v1 has no branch-specific denial logic beyond that — this is
+ * the extension point, not a completed per-branch feature. `[OPEN — E-P2.2]` decides whether Track 2's
+ * economy needs its own visibility rule distinct from this function entirely.
+ */
+export function economyVisible(account: Account, branch?: 'A' | 'B' | 'C' | 'D' | 'E'): boolean {
+  void branch;
   return account.ageVerified21Plus && !account.selfExcluded;
 }
 

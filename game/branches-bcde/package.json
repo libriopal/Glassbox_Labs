@@ -9,7 +9,10 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:economy-self-exclusion-unconditional": "tsx verify-economy-self-exclusion-unconditional.ts",
+    "verify:branch-identity-not-hardcoded-ui": "tsx verify-branch-identity-not-hardcoded-ui.ts",
+    "verify": "npm run verify:economy-self-exclusion-unconditional && npm run verify:branch-identity-not-hardcoded-ui"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
