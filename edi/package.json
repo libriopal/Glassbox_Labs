@@ -9,7 +9,11 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:bsl-blocks-self-excluded": "tsx verify-bsl-blocks-self-excluded.ts",
+    "verify:allowlist-closed": "tsx verify-allowlist-closed.ts",
+    "verify:promote-human-only": "tsx verify-promote-human-only.ts",
+    "verify": "npm run verify:bsl-blocks-self-excluded && npm run verify:allowlist-closed && npm run verify:promote-human-only"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
