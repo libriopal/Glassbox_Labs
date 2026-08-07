@@ -26,6 +26,10 @@
     "verify:p2-schema": "tsx core/store/verify-p2-schema.ts",
     "verify:genome-settlement": "npm run verify --prefix genome/settlement",
     "verify:edi": "npm run verify --prefix edi",
+    "verify:job-no-double-claim": "tsx core/store/verify-job-no-double-claim.ts",
+    "verify:workers-montecarlo": "npm run verify --prefix workers/montecarlo-harness",
+    "verify:workers-breeder": "npm run verify --prefix workers/genome-breeder",
+    "verify:workers-edi": "npm run verify --prefix workers/edi-curation",
     "verify:no-secrets": "tsx 00_GOVERNANCE/verify-no-secrets.ts",
     "verify:no-prod-credentials-local": "tsx 00_GOVERNANCE/verify-no-prod-credentials-local.ts",
     "verify": "npm run verify:genome && npm run verify:expression && npm run verify:telemetry && npm run verify:harvest && npm run verify:corpus && npm run verify:fitness && npm run verify:gates && npm run verify:kot && npm run verify:determinism && npm run verify:branch-a && npm run verify:breeder && npm run verify:economy && npm run verify:suite && npm run verify:store && npm run verify:no-secrets && npm run verify:no-prod-credentials-local"

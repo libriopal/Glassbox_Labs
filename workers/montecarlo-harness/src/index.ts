@@ -1,3 +1,6 @@
-// workers/montecarlo-harness/src/index.ts — placeholder, filled in per
-// handoff_p2/05_WORKERS_SPEC.md in a later build step.
-export const WORKERS_MONTECARLO_STUB = true;
+// workers/montecarlo-harness/src/index.ts — public surface of @glassbox/workers-montecarlo.
+export * from './poll';
+export * from './agents';
+export * from './seed-battery';
+export * from './harness';
+export * from './worker';

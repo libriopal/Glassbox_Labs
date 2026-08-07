@@ -9,7 +9,9 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:worker-processes-job": "tsx verify-worker-processes-job.ts",
+    "verify": "npm run verify:worker-processes-job"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -17,6 +19,7 @@
     "typescript": "^5.6.0"
   },
   "dependencies": {
-    "@glassbox/genome-engine": "workspace:*"
+    "@glassbox/genome-engine": "workspace:*",
+    "@glassbox/store": "workspace:*"
   }
 }

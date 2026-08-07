@@ -9,7 +9,10 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "verify:edi-no-unscored-promotion": "tsx verify-edi-no-unscored-promotion.ts",
+    "verify:worker-processes-job": "tsx verify-worker-processes-job.ts",
+    "verify": "npm run verify:edi-no-unscored-promotion && npm run verify:worker-processes-job"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -18,6 +21,7 @@
   },
   "dependencies": {
     "@glassbox/genome-engine": "workspace:*",
-    "@glassbox/edi": "workspace:*"
+    "@glassbox/edi": "workspace:*",
+    "@glassbox/store": "workspace:*"
   }
 }

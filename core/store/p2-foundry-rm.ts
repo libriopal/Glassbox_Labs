@@ -29,7 +29,10 @@ const { Pool } = pg;
 type PoolClient = InstanceType<typeof pg.Client>;
 
 const MIGRATIONS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'migrations');
-const P2_MIGRATION_PATH = join(MIGRATIONS_DIR, '0002_p2_genome_foundry_rm_finance.postgres.admin.sql');
+const P2_MIGRATION_PATHS = [
+  join(MIGRATIONS_DIR, '0002_p2_genome_foundry_rm_finance.postgres.admin.sql'),
+  join(MIGRATIONS_DIR, '0003_p2_worker_spend.postgres.admin.sql'),
+];
 
 // --- jobs (genome_foundry.jobs) ---------------------------------------------
 
@@ -90,6 +93,17 @@ export interface RecordHarnessResultInput {
   precogLiftHumanCal: number;
   degenerateStrategyFlag: boolean;
   raw: unknown;
+}
+
+// --- genome_foundry.worker_spend (D8 fix #1: persisted, restart-proof) ------
+
+export interface RecordSpendInput {
+  worker: string;
+  model: string;
+  tokensIn: number;
+  tokensOut: number;
+  costUsdMicros: bigint;
+  jobId?: string | null;
 }
 
 // --- rm_finance ---------------------------------------------------------------
@@ -177,7 +191,7 @@ export class P2FoundryRmStore {
   }
 
   async migrate(): Promise<void> {
-    await this.pool.query(readFileSync(P2_MIGRATION_PATH, 'utf8'));
+    for (const path of P2_MIGRATION_PATHS) await this.pool.query(readFileSync(path, 'utf8'));
   }
 
   async close(): Promise<void> {
@@ -293,6 +307,32 @@ export class P2FoundryRmStore {
   async hasHarnessResult(organismId: string): Promise<boolean> {
     const { rows } = await this.pool.query(`SELECT 1 FROM genome_foundry.harness_results WHERE organism_id=$1 LIMIT 1`, [organismId]);
     return rows.length > 0;
+  }
+
+  async getLatestHarnessResult(organismId: string): Promise<{ skillDelta: number; solverMargin: number; degenerateStrategyFlag: boolean } | null> {
+    const { rows } = await this.pool.query(
+      `SELECT skill_delta, solver_margin, degenerate_strategy_flag FROM genome_foundry.harness_results
+       WHERE organism_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      [organismId],
+    );
+    if (!rows[0]) return null;
+    return { skillDelta: rows[0].skill_delta, solverMargin: rows[0].solver_margin, degenerateStrategyFlag: rows[0].degenerate_strategy_flag };
+  }
+
+  // --- worker_spend (D8 fix #1: persisted, restart-proof budget tracking) ----
+
+  /** A DB row, not an in-memory counter — survives worker process restarts by construction. */
+  async recordSpend(input: RecordSpendInput): Promise<void> {
+    await this.pool.query(
+      `INSERT INTO genome_foundry.worker_spend (worker, model, tokens_in, tokens_out, cost_usd_micros, job_id)
+       VALUES ($1,$2,$3,$4,$5,$6)`,
+      [input.worker, input.model, input.tokensIn, input.tokensOut, input.costUsdMicros.toString(), input.jobId ?? null],
+    );
+  }
+
+  async getTotalSpendMicros(worker: string): Promise<bigint> {
+    const { rows } = await this.pool.query(`SELECT COALESCE(SUM(cost_usd_micros), 0) AS total FROM genome_foundry.worker_spend WHERE worker=$1`, [worker]);
+    return BigInt(rows[0]?.total ?? 0);
   }
 
   // --- rm_finance ----------------------------------------------------------------

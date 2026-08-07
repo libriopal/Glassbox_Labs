@@ -125,6 +125,9 @@ importers:
       '@glassbox/genome-engine':
         specifier: workspace:*
         version: link:../../genome/engine
+      '@glassbox/store':
+        specifier: workspace:*
+        version: link:../../core/store
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -141,6 +144,9 @@ importers:
       '@glassbox/genome-breeder':
         specifier: workspace:*
         version: link:../../genome/breeder
+      '@glassbox/store':
+        specifier: workspace:*
+        version: link:../../core/store
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -157,6 +163,9 @@ importers:
       '@glassbox/genome-engine':
         specifier: workspace:*
         version: link:../../genome/engine
+      '@glassbox/store':
+        specifier: workspace:*
+        version: link:../../core/store
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
