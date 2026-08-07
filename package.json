@@ -23,6 +23,7 @@
     "verify:economy": "tsx game/economy/verify-economy.ts",
     "verify:suite": "tsx 00_GOVERNANCE/verify-suite.ts",
     "verify:store": "tsx core/store/verify-store.ts",
+    "verify:p2-schema": "tsx core/store/verify-p2-schema.ts",
     "verify:no-secrets": "tsx 00_GOVERNANCE/verify-no-secrets.ts",
     "verify:no-prod-credentials-local": "tsx 00_GOVERNANCE/verify-no-prod-credentials-local.ts",
     "verify": "npm run verify:genome && npm run verify:expression && npm run verify:telemetry && npm run verify:harvest && npm run verify:corpus && npm run verify:fitness && npm run verify:gates && npm run verify:kot && npm run verify:determinism && npm run verify:branch-a && npm run verify:breeder && npm run verify:economy && npm run verify:suite && npm run verify:store && npm run verify:no-secrets && npm run verify:no-prod-credentials-local"

@@ -1,0 +1,13 @@
+{
+  "name": "@glassbox/store",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vendor-neutral persistence boundary (§3.1). The only package allowed to import a Postgres client — see verify-no-vendor-leak.",
+  "exports": {
+    ".": "./types.ts",
+    "./postgres": "./postgres.ts",
+    "./sqlite": "./sqlite.ts",
+    "./p2-foundry-rm": "./p2-foundry-rm.ts"
+  }
+}

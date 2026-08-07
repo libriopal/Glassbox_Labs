@@ -1,10 +1,19 @@
 # P2+ additive workspace — see handoff_p2/01_MONOREPO_SETUP.md.
 # Scoped to NEW package.json-bearing dirs only. families/foundry/corpus/
-# game/branch-a/game/determinism/game/economy/core/00_GOVERNANCE stay on the
+# game/branch-a/game/determinism/game/economy/00_GOVERNANCE stay on the
 # existing flat root tsconfig.json project — they have no package.json, so
 # these globs do not pull them into the workspace.
+#
+# "core/store" is the one exception: it gets a package.json (below) so
+# genome/settlement and workers/* can depend on it via workspace:* rather
+# than each opening their own Postgres client — core/store stays the ONLY
+# place in the repo that imports `pg` directly. Its files remain part of the
+# existing flat root tsconfig.json project too (root tsconfig's "include"
+# still lists "core") — the package.json only adds pnpm-workspace
+# resolvability, it does not change how core/store/*.ts is typechecked.
 packages:
   - "game/*"
   - "genome/*"
   - "edi"
   - "workers/*"
+  - "core/store"
