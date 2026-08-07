@@ -1,0 +1,22 @@
+{
+  "name": "@glassbox/genome-breeder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Breeding package \u2014 placeholder wrapping the pre-existing foundry/breeder pending Spec 38 REV B (not included in handoff_p2).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "@glassbox/genome-engine": "workspace:*"
+  }
+}

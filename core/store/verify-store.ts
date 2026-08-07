@@ -183,7 +183,7 @@ const NAMED: Record<string, string> = {
 // ---------------------------------------------------------------------------
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SOURCE_DIRS = ['core', 'engine', 'server', 'client', 'harvest', 'console', 'foundry', 'families', 'game', 'corpus', '00_GOVERNANCE'];
+const SOURCE_DIRS = ['core', 'engine', 'server', 'client', 'harvest', 'console', 'foundry', 'families', 'game', 'corpus', '00_GOVERNANCE', 'genome', 'edi', 'workers'];
 
 function walk(dir: string, exts: string[]): string[] {
   let out: string[] = [];

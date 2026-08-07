@@ -1,0 +1,22 @@
+{
+  "name": "@glassbox/genome-render",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Render-layer stub over @glassbox/genome-engine \u2014 no spec file in handoff_p2 beyond the package table; placeholder pending its own spec.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "@glassbox/genome-engine": "workspace:*"
+  }
+}

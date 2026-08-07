@@ -1,0 +1,25 @@
+{
+  "name": "@glassbox/genome-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isomorphic genome board/match engine — no DOM, no Node built-ins (handoff_p2/03_GENOME_ENGINE_SPEC.md).",
+  "exports": {
+    ".": "./src/index.ts",
+    "./fixedpoint": "./src/fixedpoint.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build:browser": "esbuild src/index.ts --bundle --platform=browser --target=es2022 --outfile=dist/browser.bundle.js",
+    "verify:no-float-sim": "tsx verify-no-float-sim.ts",
+    "verify:k-is-sole-identity": "tsx verify-k-is-sole-identity.ts",
+    "verify:isomorphic-build": "tsx verify-isomorphic-build.ts",
+    "verify": "npm run verify:no-float-sim && npm run verify:k-is-sole-identity && npm run verify:isomorphic-build"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

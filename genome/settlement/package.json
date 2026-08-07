@@ -1,0 +1,22 @@
+{
+  "name": "@glassbox/genome-settlement",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "RMG pari-mutuel settlement \u2014 FEATURE_RM_SETTLEMENT=false by default (handoff_p2/04_RMG_LEDGER_AND_SETTLEMENT.md).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "@glassbox/genome-engine": "workspace:*"
+  }
+}

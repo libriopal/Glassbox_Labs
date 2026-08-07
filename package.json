@@ -3,8 +3,12 @@
   "version": "6.0.0",
   "private": true,
   "type": "module",
-  "description": "GLASSBOX v6 — genome-driven game foundry (governance + foundry + game, one repo)",
+  "description": "GLASSBOX v6 \u2014 genome-driven game foundry (governance + foundry + game, one repo)",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "verify:genome": "tsx families/genome/verify-genome.ts",
     "verify:expression": "tsx families/expression/verify-expression.ts",
     "verify:telemetry": "tsx foundry/telemetry/verify-telemetry.ts",
@@ -30,9 +34,15 @@
     "@types/node": "^22.0.0",
     "@types/pg": "^8.20.3",
     "tsx": "^4.19.0",
+    "turbo": "^2.3.0",
     "typescript": "^5.6.0"
   },
   "dependencies": {
     "pg": "^8.22.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

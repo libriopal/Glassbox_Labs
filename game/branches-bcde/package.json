@@ -1,0 +1,19 @@
+{
+  "name": "@glassbox/game-branches-bcde",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Track 1 branch B-E expansion, extends game/economy/rules.ts's economyVisible (handoff_p2/07_TRACK1_BRANCH_EXPANSION.md).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

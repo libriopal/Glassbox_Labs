@@ -1,0 +1,10 @@
+# P2+ additive workspace — see handoff_p2/01_MONOREPO_SETUP.md.
+# Scoped to NEW package.json-bearing dirs only. families/foundry/corpus/
+# game/branch-a/game/determinism/game/economy/core/00_GOVERNANCE stay on the
+# existing flat root tsconfig.json project — they have no package.json, so
+# these globs do not pull them into the workspace.
+packages:
+  - "game/*"
+  - "genome/*"
+  - "edi"
+  - "workers/*"
